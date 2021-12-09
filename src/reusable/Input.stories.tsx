@@ -9,3 +9,8 @@ export default {
 const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />;
 
 export const Demo = Template.bind({});
+Demo.args = {
+  id: "exercise",
+  label: "Exercise",
+  type: "text",
+};

@@ -1,9 +1,15 @@
-export function Input() {
+type InputProps = {
+  label: string;
+  type: "text" | "number" | "email";
+  id: string;
+};
+
+export function Input(props: InputProps) {
   return (
     <div>
-      <label htmlFor="exercise">Exercise</label>
+      <label htmlFor={props.id}>{props.label}</label>
       <br />
-      <input type="text" id="exercise" />
+      <input type={props.type} id={props.id} />
     </div>
   );
 }
