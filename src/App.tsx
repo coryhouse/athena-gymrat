@@ -60,6 +60,28 @@ export function App() {
         />
         <input type="submit" value="Save Exercise" />
       </form>
+
+      {/* Exercise 3: Display the submitted exercises in a table */}
+      <h2>Exercises</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          {exercises.map((exercise) => {
+            // here's what I want to render for each element
+            return (
+              <tr key={exercise.exercise}>
+                <td>{exercise.exercise}</td>
+                <td>{exercise.weight}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </>
   );
 }
