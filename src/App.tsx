@@ -6,6 +6,12 @@ type NewExercise = {
   weight: string;
 };
 
+type Exercise = {
+  id: number;
+  exercise: string;
+  weight: string;
+};
+
 const newExercise: NewExercise = {
   exercise: "",
   weight: "",
@@ -13,6 +19,7 @@ const newExercise: NewExercise = {
 
 export function App() {
   const [exercise, setExercise] = useState(newExercise);
+  const [exercises, setExercises] = useState<Exercise[]>([]);
 
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     setExercise({
@@ -24,7 +31,19 @@ export function App() {
   return (
     <>
       <h1>Gymrat</h1>
-      <form>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault(); // Don't post back
+          setExercises([
+            ...exercises,
+            {
+              exercise: exercise.exercise,
+              weight: exercise.weight,
+              id: 1, // HACK
+            },
+          ]);
+        }}
+      >
         <Input
           value={exercise.exercise}
           onChange={onChange}
