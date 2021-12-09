@@ -1,6 +1,23 @@
 /* eslint-disable jest/valid-title */
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Input, inputType } from "./Input";
+
+it("should call the onChange handler", () => {
+  const onChange = jest.fn();
+  render(
+    <Input
+      onChange={onChange}
+      id="test"
+      label="Example label"
+      type="text"
+      value=""
+    />
+  );
+  const input = screen.getByLabelText("Example label");
+  userEvent.type(input, "Hi");
+  expect(onChange).toHaveBeenCalledTimes(2);
+});
 
 it("should apply specified label and associate the label with the input", () => {
   const label = "Test label";
