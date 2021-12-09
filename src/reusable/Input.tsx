@@ -1,3 +1,5 @@
+import { ChangeEventHandler } from "react";
+
 export const inputType = ["text", "number", "email"] as const;
 type InputType = typeof inputType[number]; // This creates a union type
 
@@ -13,6 +15,9 @@ type InputProps = {
 
   /** Input value */
   value: string;
+
+  /** Function called on input change */
+  onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
 /** Reusable Input with Label */
@@ -21,7 +26,12 @@ export function Input(props: InputProps) {
     <div>
       <label htmlFor={props.id}>{props.label}</label>
       <br />
-      <input type={props.type} id={props.id} value={props.value} />
+      <input
+        onChange={props.onChange}
+        type={props.type}
+        id={props.id}
+        value={props.value}
+      />
     </div>
   );
 }
