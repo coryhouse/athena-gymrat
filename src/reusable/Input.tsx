@@ -4,6 +4,9 @@ export const inputType = ["text", "number", "email"] as const;
 type InputType = typeof inputType[number]; // This creates a union type
 
 type InputProps = {
+  /** Validation error to display below the input */
+  error: string;
+
   /** Input label */
   label: string;
 
@@ -23,15 +26,18 @@ type InputProps = {
 /** Reusable Input with Label */
 export function Input(props: InputProps) {
   return (
-    <div>
-      <label htmlFor={props.id}>{props.label}</label>
-      <br />
-      <input
-        onChange={props.onChange}
-        type={props.type}
-        id={props.id}
-        value={props.value}
-      />
-    </div>
+    <>
+      <div>
+        <label htmlFor={props.id}>{props.label}</label>
+        <br />
+        <input
+          onChange={props.onChange}
+          type={props.type}
+          id={props.id}
+          value={props.value}
+        />
+      </div>
+      {props.error && <p>{props.error}</p>}
+    </>
   );
 }
