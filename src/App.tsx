@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Input } from "./reusable/Input";
 
 type NewExercise = {
@@ -17,9 +17,18 @@ const newExercise: NewExercise = {
   weight: "",
 };
 
+type Errors = {
+  type?: string;
+  weight?: string;
+};
+
 export function App() {
   const [exercise, setExercise] = useState(newExercise);
   const [exercises, setExercises] = useState<Exercise[]>([]);
+
+  // Derived state
+  const errors = validate();
+  const formIsValid = Object.keys(errors).length === 0;
 
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     setExercise({
@@ -28,22 +37,31 @@ export function App() {
     });
   }
 
+  function validate() {
+    const errors: Errors = {};
+    if (!exercise.type) errors.type = "Please enter a name for the exercise.";
+    if (!exercise.weight)
+      errors.weight = "Please enter a weight for the exercise.";
+    return errors;
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); // Don't post back
+    setExercises([
+      ...exercises,
+      {
+        exercise: exercise.type,
+        weight: exercise.weight,
+        id: 1, // HACK
+      },
+    ]);
+    setExercise(newExercise);
+  }
+
   return (
     <>
       <h1>Gymrat</h1>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault(); // Don't post back
-          setExercises([
-            ...exercises,
-            {
-              exercise: exercise.type,
-              weight: exercise.weight,
-              id: 1, // HACK
-            },
-          ]);
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <Input
           value={exercise.type}
           onChange={onChange}
