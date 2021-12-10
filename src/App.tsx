@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { Input } from "./reusable/Input";
 
 type NewExercise = {
-  exercise: string;
+  type: string;
   weight: string;
 };
 
@@ -13,7 +13,7 @@ type Exercise = {
 };
 
 const newExercise: NewExercise = {
-  exercise: "",
+  type: "",
   weight: "",
 };
 
@@ -37,7 +37,7 @@ export function App() {
           setExercises([
             ...exercises,
             {
-              exercise: exercise.exercise,
+              exercise: exercise.type,
               weight: exercise.weight,
               id: 1, // HACK
             },
@@ -45,10 +45,10 @@ export function App() {
         }}
       >
         <Input
-          value={exercise.exercise}
+          value={exercise.type}
           onChange={onChange}
-          label="Exercise"
-          id="exercise"
+          label="What exercise?"
+          id="type"
           type="text"
         />
         <Input
