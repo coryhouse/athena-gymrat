@@ -1,4 +1,4 @@
-it.only("should validate onBlur", () => {
+it("should validate onBlur", () => {
   cy.visit("http://localhost:3000");
 
   // Initially, no validation errors should display
@@ -6,9 +6,11 @@ it.only("should validate onBlur", () => {
   cy.findByText("Please enter a weight for the exercise.").should("not.exist");
 
   cy.findByLabelText("What exercise?").focus().blur();
+  cy.findByLabelText("Weight").focus().blur();
 
-  // Now, validation error message should display
+  // Now, validation error messages should display
   cy.findByText("Please enter a name for the exercise.");
+  cy.findByText("Please enter a weight for the exercise.");
 });
 
 it("should support adding an exercise", () => {
@@ -28,4 +30,8 @@ it("should support adding an exercise", () => {
   cy.findByLabelText("What exercise?").should("have.value", "");
   cy.findByText("Hula Hoop");
   cy.findByText("5");
+
+  // The validation messages should no longer display
+  cy.findByText("Please enter a name for the exercise.").should("not.exist");
+  cy.findByText("Please enter a weight for the exercise.").should("not.exist");
 });
