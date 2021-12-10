@@ -6,10 +6,8 @@ type NewExercise = {
   weight: string;
 };
 
-type Exercise = {
+type Exercise = NewExercise & {
   id: number;
-  exercise: string;
-  weight: string;
 };
 
 const newExercise: NewExercise = {
@@ -17,14 +15,17 @@ const newExercise: NewExercise = {
   weight: "",
 };
 
-type Errors = {
-  type?: string;
-  weight?: string;
+type Errors = Partial<NewExercise>;
+
+type Touched = {
+  type?: boolean;
+  weight?: boolean;
 };
 
 type Status = "Idle" | "Submitted";
 
 export function App() {
+  const [touched, setTouched] = useState<Touched>({});
   const [status, setStatus] = useState<Status>("Idle");
   const [exercise, setExercise] = useState(newExercise);
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -43,9 +44,9 @@ export function App() {
   function validate() {
     const errors: Errors = {};
     // Since form hasn't been submitted yet, don't bother validating.
-    if (status === "Idle") return errors;
-    if (!exercise.type) errors.type = "Please enter a name for the exercise.";
-    if (!exercise.weight)
+    if (!exercise.type && (status === "Submitted" || touched.type))
+      errors.type = "Please enter a name for the exercise.";
+    if (!exercise.weight && (status === "Submitted" || touched.weight))
       errors.weight = "Please enter a weight for the exercise.";
     return errors;
   }
@@ -57,12 +58,16 @@ export function App() {
     setExercises([
       ...exercises,
       {
-        exercise: exercise.type,
+        type: exercise.type,
         weight: exercise.weight,
         id: 1, // HACK
       },
     ]);
     setExercise(newExercise);
+  }
+
+  function onBlur(event: React.FocusEvent<HTMLInputElement>) {
+    setTouched({ ...touched, [event.target.id]: true });
   }
 
   return (
@@ -72,6 +77,7 @@ export function App() {
         <Input
           value={exercise.type}
           onChange={onChange}
+          onBlur={onBlur}
           label="What exercise?"
           id="type"
           type="text"
@@ -80,6 +86,7 @@ export function App() {
         <Input
           value={exercise.weight}
           onChange={onChange}
+          onBlur={onBlur}
           id="weight"
           label="Weight"
           type="number"
@@ -101,8 +108,8 @@ export function App() {
           {exercises.map((exercise) => {
             // here's what I want to render for each element
             return (
-              <tr key={exercise.exercise}>
-                <td>{exercise.exercise}</td>
+              <tr key={exercise.id}>
+                <td>{exercise.type}</td>
                 <td>{exercise.weight}</td>
               </tr>
             );
