@@ -22,7 +22,10 @@ type Errors = {
   weight?: string;
 };
 
+type Status = "Idle" | "Submitted";
+
 export function App() {
+  const [status, setStatus] = useState<Status>("Idle");
   const [exercise, setExercise] = useState(newExercise);
   const [exercises, setExercises] = useState<Exercise[]>([]);
 
@@ -39,6 +42,8 @@ export function App() {
 
   function validate() {
     const errors: Errors = {};
+    // Since form hasn't been submitted yet, don't bother validating.
+    if (status === "Idle") return errors;
     if (!exercise.type) errors.type = "Please enter a name for the exercise.";
     if (!exercise.weight)
       errors.weight = "Please enter a weight for the exercise.";
@@ -47,6 +52,8 @@ export function App() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // Don't post back
+    setStatus("Submitted");
+    if (!formIsValid) return; // if form isn't valid, stop here.
     setExercises([
       ...exercises,
       {
@@ -68,6 +75,7 @@ export function App() {
           label="What exercise?"
           id="type"
           type="text"
+          error={errors.type}
         />
         <Input
           value={exercise.weight}
@@ -75,6 +83,7 @@ export function App() {
           id="weight"
           label="Weight"
           type="number"
+          error={errors.weight}
         />
         <input type="submit" value="Save Exercise" />
       </form>
