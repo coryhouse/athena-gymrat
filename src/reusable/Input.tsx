@@ -5,7 +5,7 @@ type InputType = typeof inputType[number]; // This creates a union type
 
 type InputProps = {
   /** Validation error to display below the input */
-  error: string;
+  error: string | undefined;
 
   /** Input label */
   label: string;
@@ -37,7 +37,7 @@ export function Input(props: InputProps) {
           value={props.value}
         />
       </div>
-      {props.error && <p>{props.error}</p>}
+      {props.error && <p style={{ color: "red" }}>{props.error}</p>}
     </>
   );
 }
