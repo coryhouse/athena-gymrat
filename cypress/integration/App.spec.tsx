@@ -1,3 +1,16 @@
+it.only("should validate onBlur", () => {
+  cy.visit("http://localhost:3000");
+
+  // Initially, no validation errors should display
+  cy.findByText("Please enter a name for the exercise.").should("not.exist");
+  cy.findByText("Please enter a weight for the exercise.").should("not.exist");
+
+  cy.findByLabelText("What exercise?").focus().blur();
+
+  // Now, validation error message should display
+  cy.findByText("Please enter a name for the exercise.");
+});
+
 it("should support adding an exercise", () => {
   cy.visit("http://localhost:3000");
 
