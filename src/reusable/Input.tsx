@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, FocusEventHandler } from "react";
 
 export const inputType = ["text", "number", "email"] as const;
 type InputType = typeof inputType[number]; // This creates a union type
@@ -21,6 +21,9 @@ type InputProps = {
 
   /** Function called on input change */
   onChange: ChangeEventHandler<HTMLInputElement>;
+
+  /** Function called on input blur */
+  onBlur: FocusEventHandler<HTMLInputElement>;
 };
 
 /** Reusable Input with Label */
@@ -31,6 +34,7 @@ export function Input(props: InputProps) {
         <label htmlFor={props.id}>{props.label}</label>
         <br />
         <input
+          onBlur={props.onBlur}
           onChange={props.onChange}
           type={props.type}
           id={props.id}
