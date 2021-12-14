@@ -47,9 +47,9 @@ export function App() {
             path="/"
             element={
               <ErrorBoundary
-                fallbackRender={() => (
-                  <p>Sorry, exercises is currently down.</p>
-                )}
+                fallbackRender={({ error, resetErrorBoundary }) => {
+                  return <p>Sorry, exercises is currently down.</p>;
+                }}
               >
                 <Exercises exercises={exercises} setExercises={setExercises} />
               </ErrorBoundary>
