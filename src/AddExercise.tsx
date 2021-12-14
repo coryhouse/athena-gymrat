@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { addExercise } from "./api/exerciseApi";
 import { Input } from "./reusable/Input";
 import { Exercise, FormStatus, NewExercise } from "./types";
@@ -50,6 +51,7 @@ export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
       weight: exercise.weight,
     });
     setExercises([...exercises, savedExercise]);
+    toast.success("Exercise saved.");
     navigate("/");
   }
 

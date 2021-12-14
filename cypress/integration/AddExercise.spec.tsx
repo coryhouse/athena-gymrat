@@ -29,6 +29,8 @@ describe("Add Exercise", () => {
     cy.findByLabelText("Weight").type("5");
     cy.findByRole("button", { name: "Save Exercise" }).click();
 
+    cy.findByText("Exercise saved.");
+
     // Confirm saved data displays on home page.
     cy.findByText("Hula Hoop");
     cy.findByText("5");
@@ -37,5 +39,7 @@ describe("Add Exercise", () => {
     cy.findByLabelText("Delete Hula Hoop with weight of 5")
       .click()
       .should("not.exist");
+
+    cy.findByText("Exercise deleted.");
   });
 });
