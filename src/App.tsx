@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { AddExercise } from "./AddExercise";
+import { getExercises } from "./api/exerciseApi";
 import { Exercises } from "./Exercises";
 import { Exercise } from "./types";
 
 export function App() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const _exercises = await getExercises();
+      setExercises(_exercises);
+    }
+    fetchData();
+  }, []);
 
   return (
     <>
