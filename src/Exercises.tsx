@@ -10,15 +10,18 @@ export function Exercises({ exercises }: ExerciseProps) {
       <table>
         <thead>
           <tr>
+            <th>&nbsp;</th>
             <th>Exercise</th>
             <th>Weight</th>
           </tr>
         </thead>
         <tbody>
           {exercises.map((exercise) => {
-            // here's what I want to render for each element
             return (
               <tr key={exercise.id}>
+                <td>
+                  <button>Delete</button>
+                </td>
                 <td>{exercise.type}</td>
                 <td>{exercise.weight}</td>
               </tr>
