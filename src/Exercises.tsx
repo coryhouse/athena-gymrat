@@ -1,4 +1,8 @@
+import { deleteExercise } from "./api/exerciseApi";
 import { Exercise } from "./types";
+
+// Exercise 2: Remove the exercise from state after the delete completes.
+// This way, the UI will reflect the deletion.
 
 type ExerciseProps = {
   exercises: Exercise[];
@@ -20,7 +24,9 @@ export function Exercises({ exercises }: ExerciseProps) {
             return (
               <tr key={exercise.id}>
                 <td>
-                  <button>Delete</button>
+                  <button onClick={(e) => deleteExercise(exercise.id)}>
+                    Delete
+                  </button>
                 </td>
                 <td>{exercise.type}</td>
                 <td>{exercise.weight}</td>
