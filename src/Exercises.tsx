@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { deleteExercise } from "./api/exerciseApi";
 import { Exercise } from "./types";
 
@@ -7,6 +8,8 @@ type ExerciseProps = {
 };
 
 export function Exercises({ exercises, setExercises }: ExerciseProps) {
+  const [error, setError] = useState<unknown>(null);
+
   function renderTable() {
     return (
       <table>
@@ -24,13 +27,17 @@ export function Exercises({ exercises, setExercises }: ExerciseProps) {
                 <td>
                   <button
                     aria-label={`Delete ${exercise.type} with weight of ${exercise.weight}`}
-                    onClick={(e) => {
-                      deleteExercise(exercise.id);
-                      // This is an optimistic delete.
-                      // We're not waiting for the delete call above to succeed.
-                      setExercises(
-                        exercises.filter((e) => e.id !== exercise.id)
-                      );
+                    onClick={async (e) => {
+                      try {
+                        // This is an optimistic delete.
+                        // We're not waiting for the delete call above to succeed.
+                        setExercises(
+                          exercises.filter((e) => e.id !== exercise.id)
+                        );
+                        await deleteExercise(exercise.id);
+                      } catch (error) {
+                        setError(error);
+                      }
                     }}
                   >
                     Delete
@@ -45,6 +52,8 @@ export function Exercises({ exercises, setExercises }: ExerciseProps) {
       </table>
     );
   }
+
+  if (error) throw error;
 
   return (
     <>
