@@ -5,11 +5,8 @@ type ExerciseProps = {
 };
 
 export function Exercises({ exercises }: ExerciseProps) {
-  return (
-    <>
-      <h1>Gymrat</h1>
-
-      <h2>Exercises</h2>
+  function renderTable() {
+    return (
       <table>
         <thead>
           <tr>
@@ -29,6 +26,15 @@ export function Exercises({ exercises }: ExerciseProps) {
           })}
         </tbody>
       </table>
+    );
+  }
+
+  return (
+    <>
+      <h1>Gymrat</h1>
+
+      <h2>Exercises</h2>
+      {exercises.length > 0 ? renderTable() : <p>No exercises exist. :(</p>}
     </>
   );
 }
