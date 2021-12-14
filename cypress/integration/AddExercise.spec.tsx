@@ -18,7 +18,7 @@ describe("Add Exercise", () => {
     cy.findByText("Please enter a weight for the exercise.");
   });
 
-  it("should support adding an exercise", () => {
+  it("should support adding and deleting an exercise", () => {
     // Should require all fields, so submit the form empty
     cy.findByRole("button", { name: "Save Exercise" }).click();
 
@@ -32,5 +32,10 @@ describe("Add Exercise", () => {
     // Confirm saved data displays on home page.
     cy.findByText("Hula Hoop");
     cy.findByText("5");
+
+    // Now that it's saved, let's test deletion
+    cy.findByLabelText("Delete Hula Hoop with weight of 5")
+      .click()
+      .should("not.exist");
   });
 });
