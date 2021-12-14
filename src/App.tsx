@@ -27,6 +27,7 @@ export function App() {
             <AddExercise exercises={exercises} setExercises={setExercises} />
           }
         />
+        <Route path="*" element={<h1>Page not found.</h1>} />
       </Routes>
     </>
   );
