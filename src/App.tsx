@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { Link, Route, Routes } from "react-router-dom";
 import { AddExercise } from "./AddExercise";
 import { getExercises } from "./api/exerciseApi";
@@ -38,7 +39,13 @@ export function App() {
           <Route
             path="/"
             element={
-              <Exercises exercises={exercises} setExercises={setExercises} />
+              <ErrorBoundary
+                fallbackRender={() => (
+                  <p>Sorry, exercises is currently down.</p>
+                )}
+              >
+                <Exercises exercises={exercises} setExercises={setExercises} />
+              </ErrorBoundary>
             }
           />
           <Route
