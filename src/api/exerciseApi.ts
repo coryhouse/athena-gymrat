@@ -1,4 +1,4 @@
-import { NewExercise } from "../types";
+import { Exercise, NewExercise } from "../types";
 
 export async function addExercise(exercise: NewExercise) {
   const resp = await fetch("http://localhost:3001/exercises", {
@@ -10,6 +10,6 @@ export async function addExercise(exercise: NewExercise) {
   });
 
   if (!resp.ok) throw resp;
-  const savedExercise = await resp.json();
+  const savedExercise = (await resp.json()) as Exercise;
   return savedExercise;
 }
