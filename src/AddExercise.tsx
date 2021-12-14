@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input } from "./reusable/Input";
 import { Exercise, FormStatus, NewExercise } from "./types";
 
@@ -17,6 +18,7 @@ type AddExerciseProps = {
 export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
   const [status, setStatus] = useState<FormStatus>("Idle");
   const [exercise, setExercise] = useState(newExercise);
+  const navigate = useNavigate();
 
   // Derived state
   const errors = validate();
@@ -51,7 +53,7 @@ export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
       },
     ]);
     setExercise(newExercise);
-    setStatus("Idle");
+    navigate("/");
   }
 
   return (
