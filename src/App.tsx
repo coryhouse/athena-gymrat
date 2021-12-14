@@ -35,7 +35,12 @@ export function App() {
         "Loading..."
       ) : (
         <Routes>
-          <Route path="/" element={<Exercises exercises={exercises} />} />
+          <Route
+            path="/"
+            element={
+              <Exercises exercises={exercises} setExercises={setExercises} />
+            }
+          />
           <Route
             path="/add"
             element={

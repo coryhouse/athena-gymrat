@@ -1,14 +1,12 @@
 import { deleteExercise } from "./api/exerciseApi";
 import { Exercise } from "./types";
 
-// Exercise 2: Remove the exercise from state after the delete completes.
-// This way, the UI will reflect the deletion.
-
 type ExerciseProps = {
   exercises: Exercise[];
+  setExercises: (exercises: Exercise[]) => void;
 };
 
-export function Exercises({ exercises }: ExerciseProps) {
+export function Exercises({ exercises, setExercises }: ExerciseProps) {
   function renderTable() {
     return (
       <table>
@@ -24,7 +22,16 @@ export function Exercises({ exercises }: ExerciseProps) {
             return (
               <tr key={exercise.id}>
                 <td>
-                  <button onClick={(e) => deleteExercise(exercise.id)}>
+                  <button
+                    onClick={(e) => {
+                      deleteExercise(exercise.id);
+                      // This is an optimistic delete.
+                      // We're not waiting for the delete call above to succeed.
+                      setExercises(
+                        exercises.filter((e) => e.id !== exercise.id)
+                      );
+                    }}
+                  >
                     Delete
                   </button>
                 </td>
