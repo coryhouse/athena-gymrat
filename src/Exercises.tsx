@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { deleteExercise } from "./api/exerciseApi";
 import { Exercise } from "./types";
 
@@ -35,6 +36,7 @@ export function Exercises({ exercises, setExercises }: ExerciseProps) {
                           exercises.filter((e) => e.id !== exercise.id)
                         );
                         await deleteExercise(exercise.id);
+                        toast.success("Exercise deleted.");
                       } catch (error) {
                         setError(error);
                       }
