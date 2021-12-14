@@ -14,6 +14,15 @@ export async function addExercise(exercise: NewExercise) {
   return savedExercise;
 }
 
+export async function deleteExercise(id: Number) {
+  const resp = await fetch("http://localhost:3001/exercises/" + id, {
+    method: "DELETE",
+  });
+
+  if (!resp.ok) throw resp;
+  return true;
+}
+
 export async function getExercises() {
   const resp = await fetch("http://localhost:3001/exercises");
   if (!resp.ok) throw resp;
