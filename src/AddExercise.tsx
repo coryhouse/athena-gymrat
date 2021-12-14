@@ -58,6 +58,7 @@ export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h1>Add Exercise</h1>
       <Input
         value={exercise.type}
         onChange={onChange}
