@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { addExercise } from "./api/exerciseApi";
 import { Input } from "./reusable/Input";
 import { Exercise, FormStatus, NewExercise } from "./types";
 
@@ -40,19 +41,15 @@ export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
     return errors;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // Don't post back
     setStatus("Submitted");
     if (!formIsValid) return; // if form isn't valid, stop here.
-    setExercises([
-      ...exercises,
-      {
-        type: exercise.type,
-        weight: exercise.weight,
-        id: 1, // HACK
-      },
-    ]);
-    setExercise(newExercise);
+    const savedExercise = await addExercise({
+      type: exercise.type,
+      weight: exercise.weight,
+    });
+    setExercises([...exercises, savedExercise]);
     navigate("/");
   }
 
