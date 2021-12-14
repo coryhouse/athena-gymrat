@@ -9,15 +9,22 @@ import { Exercise } from "./types";
 export function App() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
     async function fetchData() {
-      const _exercises = await getExercises();
-      setExercises(_exercises);
-      setIsLoading(false);
+      try {
+        const _exercises = await getExercises();
+        setExercises(_exercises);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error);
+      }
     }
     fetchData();
   }, []);
+
+  if (error) throw error;
 
   return (
     <>
