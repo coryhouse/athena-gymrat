@@ -23,6 +23,7 @@ export function Exercises({ exercises, setExercises }: ExerciseProps) {
               <tr key={exercise.id}>
                 <td>
                   <button
+                    aria-label={`Delete ${exercise.type} with weight of ${exercise.weight}`}
                     onClick={(e) => {
                       deleteExercise(exercise.id);
                       // This is an optimistic delete.
