@@ -13,3 +13,10 @@ export async function addExercise(exercise: NewExercise) {
   const savedExercise = (await resp.json()) as Exercise;
   return savedExercise;
 }
+
+export async function getExercises() {
+  const resp = await fetch("http://localhost:3001/exercises");
+  if (!resp.ok) throw resp;
+  const exercises = (await resp.json()) as Exercise[];
+  return exercises;
+}
