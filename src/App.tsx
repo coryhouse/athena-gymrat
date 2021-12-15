@@ -50,7 +50,7 @@ export function App() {
         </ul>
       </nav>
 
-      {isLoading ? (
+      {isLoading || !user ? (
         "Loading..."
       ) : (
         <Routes>
@@ -69,7 +69,11 @@ export function App() {
           <Route
             path="/add"
             element={
-              <AddExercise exercises={exercises} setExercises={setExercises} />
+              <AddExercise
+                exercises={exercises}
+                setExercises={setExercises}
+                user={user}
+              />
             }
           />
           <Route path="*" element={<h1>Page not found.</h1>} />
