@@ -11,8 +11,14 @@ import { UserContextProvider } from "./UserContext";
 // Lazy load so these are only loaded in local development
 const DevTools = React.lazy(() => import("./DevTools"));
 
+export const defaultUser: User = {
+  id: 1,
+  email: "2-exercises@email.com",
+  password: "1",
+};
+
 export function App() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>(defaultUser);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);

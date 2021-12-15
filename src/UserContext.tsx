@@ -3,8 +3,8 @@ import { createContext, useContext } from "react";
 import { User } from "./types";
 
 export type UserContextValue = {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  user: User;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
 };
 
 const UserContext = createContext<UserContextValue | null>(null);
@@ -28,7 +28,7 @@ export function UserContextProvider({
 export function useUserContext() {
   const userContext = useContext(UserContext);
   invariant(
-    userContext?.user,
+    userContext,
     "useUserContext may only be used as a child of UserContextProvider"
   );
   return {
