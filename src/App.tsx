@@ -3,6 +3,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Link, Route, Routes } from "react-router-dom";
 import { AddExercise } from "./AddExercise";
 import { getExercises } from "./api/exerciseApi";
+import { DevTools } from "./DevTools";
 import { Exercises } from "./Exercises";
 import { Exercise } from "./types";
 
@@ -28,6 +29,7 @@ export function App() {
 
   return (
     <>
+      <DevTools />
       <nav>
         <ul>
           <li>
