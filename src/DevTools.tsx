@@ -9,16 +9,19 @@ type DevToolsProps = {
   setUser: (user: User) => void;
 };
 
-export default function DevTools(props: DevToolsProps) {
+export default function DevTools({ user, setUser }: DevToolsProps) {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     async function fetchData() {
       const _users = await getUsers();
       setUsers(_users);
+
+      // set the App's selected user to the first user by default
+      setUser(_users[0]);
     }
     fetchData();
-  }, []);
+  }, [setUser]);
 
   return (
     <section className={styles.root}>
@@ -26,13 +29,13 @@ export default function DevTools(props: DevToolsProps) {
       <br />
       <select
         id="devtools-user"
-        value={props.user?.id}
+        value={user?.id}
         onChange={(event) => {
           const user = users.find(
             (user) => user.id.toString() === event.target.value
           );
           invariant(user !== undefined, "User not found.");
-          props.setUser(user);
+          setUser(user);
         }}
       >
         {users.map((user) => (
