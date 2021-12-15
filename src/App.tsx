@@ -1,11 +1,14 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Link, Route, Routes } from "react-router-dom";
 import { AddExercise } from "./AddExercise";
 import { getExercises } from "./api/exerciseApi";
-import { DevTools } from "./DevTools";
 import { Exercises } from "./Exercises";
 import { Exercise } from "./types";
+
+// Lazy load so these are only loaded in local development
+const DevTools = React.lazy(() => import("./DevTools"));
 
 export function App() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
