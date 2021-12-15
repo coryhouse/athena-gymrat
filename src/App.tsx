@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Link, Route, Routes } from "react-router-dom";
@@ -11,6 +11,7 @@ import { Exercise } from "./types";
 const DevTools = React.lazy(() => import("./DevTools"));
 
 export function App() {
+  const [user, setUser] = useState();
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
@@ -32,7 +33,11 @@ export function App() {
 
   return (
     <>
-      {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" && <DevTools />}
+      {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" && (
+        <Suspense fallback={<></>}>
+          <DevTools />
+        </Suspense>
+      )}
       <nav>
         <ul>
           <li>
