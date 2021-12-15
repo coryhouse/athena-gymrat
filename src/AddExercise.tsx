@@ -23,7 +23,7 @@ type AddExerciseProps = {
 };
 
 export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
-  const user = useUserContext();
+  const { user } = useUserContext();
   const [status, setStatus] = useState<FormStatus>("Idle");
   const [exercise, setExercise] = useState(getNewExercise(user.id));
   const navigate = useNavigate();

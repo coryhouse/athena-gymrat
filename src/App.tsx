@@ -34,7 +34,7 @@ export function App() {
   if (error) throw error;
 
   return (
-    <UserContextProvider user={user}>
+    <UserContextProvider user={user} setUser={setUser}>
       {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" && (
         <Suspense fallback={<></>}>
           <DevTools setUser={setUser} />

@@ -10,7 +10,7 @@ type DevToolsProps = {
 };
 
 export default function DevTools({ setUser }: DevToolsProps) {
-  const user = useUserContext();
+  const { user } = useUserContext();
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
