@@ -29,7 +29,7 @@ export function App() {
 
   return (
     <>
-      <DevTools />
+      {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" && <DevTools />}
       <nav>
         <ul>
           <li>
