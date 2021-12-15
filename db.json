@@ -11,6 +11,12 @@
       "type": "Dumbell curls",
       "weight": "35",
       "userId": 1
+    },
+    {
+      "id": 3,
+      "type": "Squats",
+      "weight": "235",
+      "userId": 3
     }
   ],
   "users": [
@@ -22,6 +28,11 @@
     {
       "id": 2,
       "email": "no-exercises@nope.com",
+      "password": "1"
+    },
+    {
+      "id": 3,
+      "email": "one-exercise@new.com",
       "password": "1"
     }
   ]
