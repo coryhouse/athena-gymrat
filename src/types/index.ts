@@ -9,3 +9,9 @@ export type NewExercise = {
 export type Exercise = NewExercise & {
   id: number;
 };
+
+export type User = {
+  id: number;
+  email: string;
+  password: string;
+};
