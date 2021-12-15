@@ -5,13 +5,13 @@ import { Link, Route, Routes } from "react-router-dom";
 import { AddExercise } from "./AddExercise";
 import { getExercises } from "./api/exerciseApi";
 import { Exercises } from "./Exercises";
-import { Exercise } from "./types";
+import { Exercise, User } from "./types";
 
 // Lazy load so these are only loaded in local development
 const DevTools = React.lazy(() => import("./DevTools"));
 
 export function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<User | null>(null);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
@@ -35,7 +35,7 @@ export function App() {
     <>
       {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" && (
         <Suspense fallback={<></>}>
-          <DevTools />
+          <DevTools user={user} setUser={setUser} />
         </Suspense>
       )}
       <nav>
