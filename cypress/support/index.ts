@@ -28,7 +28,7 @@ declare global {
        * Custom command to select a user from dev tools
        * @example cy.setUser('userEmail@domain.com')
        */
-      setUser(userEmail: string): Chainable<Element>;
+      setUser(userEmail: string): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
