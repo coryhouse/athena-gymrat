@@ -1,6 +1,6 @@
 import styles from "./DevTools.module.css";
 
-export function DevTools() {
+export default function DevTools() {
   return (
     <section className={styles.root}>
       <label htmlFor="devtools-user">User</label>
