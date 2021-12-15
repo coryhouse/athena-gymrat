@@ -3,24 +3,32 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addExercise } from "./api/exerciseApi";
 import { Input } from "./reusable/Input";
-import { Exercise, FormStatus, NewExercise } from "./types";
+import { Exercise, FormStatus, NewExercise, User } from "./types";
 
-const newExercise: NewExercise = {
-  type: "",
-  weight: "",
-  userId: 1, // HACK
-};
+function getNewExercise(userId: number) {
+  const newExercise: NewExercise = {
+    type: "",
+    weight: "",
+    userId: userId,
+  };
+  return newExercise;
+}
 
 type Errors = Partial<NewExercise>;
 
 type AddExerciseProps = {
   exercises: Exercise[];
   setExercises: (exercises: Exercise[]) => void;
+  user: User;
 };
 
-export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
+export function AddExercise({
+  exercises,
+  setExercises,
+  user,
+}: AddExerciseProps) {
   const [status, setStatus] = useState<FormStatus>("Idle");
-  const [exercise, setExercise] = useState(newExercise);
+  const [exercise, setExercise] = useState(getNewExercise(user.id));
   const navigate = useNavigate();
 
   // Derived state
@@ -47,11 +55,7 @@ export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
     event.preventDefault(); // Don't post back
     setStatus("Submitted");
     if (!formIsValid) return; // if form isn't valid, stop here.
-    const savedExercise = await addExercise({
-      type: exercise.type,
-      weight: exercise.weight,
-      userId: 1, // HACK: Fix this.
-    });
+    const savedExercise = await addExercise(exercise);
     setExercises([...exercises, savedExercise]);
     toast.success("Exercise saved.");
     navigate("/");
