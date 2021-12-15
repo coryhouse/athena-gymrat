@@ -8,6 +8,7 @@ import { Exercise, FormStatus, NewExercise } from "./types";
 const newExercise: NewExercise = {
   type: "",
   weight: "",
+  userId: 1, // HACK
 };
 
 type Errors = Partial<NewExercise>;
@@ -49,6 +50,7 @@ export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
     const savedExercise = await addExercise({
       type: exercise.type,
       weight: exercise.weight,
+      userId: 1, // HACK: Fix this.
     });
     setExercises([...exercises, savedExercise]);
     toast.success("Exercise saved.");

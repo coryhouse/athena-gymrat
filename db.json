@@ -3,12 +3,14 @@
     {
       "id": 1,
       "type": "Bench Press",
-      "weight": "150"
+      "weight": "150",
+      "userId": 1
     },
     {
       "id": 2,
       "type": "Dumbell curls",
-      "weight": "35"
+      "weight": "35",
+      "userId": 1
     }
   ],
   "users": [
