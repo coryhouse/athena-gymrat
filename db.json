@@ -17,7 +17,12 @@
     {
       "id": 1,
       "email": "c@h.com",
-      "password": "123"
+      "password": "1"
+    },
+    {
+      "id": 2,
+      "email": "no-exercises@nope.com",
+      "password": "1"
     }
   ]
 }
