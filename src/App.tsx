@@ -6,6 +6,7 @@ import { AddExercise } from "./AddExercise";
 import { getExercises } from "./api/exerciseApi";
 import { Exercises } from "./Exercises";
 import { Exercise, User } from "./types";
+import { UserContextProvider } from "./UserContext";
 
 // Lazy load so these are only loaded in local development
 const DevTools = React.lazy(() => import("./DevTools"));
@@ -33,10 +34,10 @@ export function App() {
   if (error) throw error;
 
   return (
-    <>
+    <UserContextProvider user={user}>
       {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" && (
         <Suspense fallback={<></>}>
-          <DevTools user={user} setUser={setUser} />
+          <DevTools setUser={setUser} />
         </Suspense>
       )}
       <nav>
@@ -50,7 +51,7 @@ export function App() {
         </ul>
       </nav>
 
-      {isLoading || !user ? (
+      {isLoading ? (
         "Loading..."
       ) : (
         <Routes>
@@ -69,16 +70,12 @@ export function App() {
           <Route
             path="/add"
             element={
-              <AddExercise
-                exercises={exercises}
-                setExercises={setExercises}
-                user={user}
-              />
+              <AddExercise exercises={exercises} setExercises={setExercises} />
             }
           />
           <Route path="*" element={<h1>Page not found.</h1>} />
         </Routes>
       )}
-    </>
+    </UserContextProvider>
   );
 }

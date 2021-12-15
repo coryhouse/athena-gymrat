@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addExercise } from "./api/exerciseApi";
 import { Input } from "./reusable/Input";
-import { Exercise, FormStatus, NewExercise, User } from "./types";
+import { Exercise, FormStatus, NewExercise } from "./types";
+import { useUserContext } from "./UserContext";
 
 function getNewExercise(userId: number) {
   const newExercise: NewExercise = {
@@ -19,14 +20,10 @@ type Errors = Partial<NewExercise>;
 type AddExerciseProps = {
   exercises: Exercise[];
   setExercises: (exercises: Exercise[]) => void;
-  user: User;
 };
 
-export function AddExercise({
-  exercises,
-  setExercises,
-  user,
-}: AddExerciseProps) {
+export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
+  const user = useUserContext();
   const [status, setStatus] = useState<FormStatus>("Idle");
   const [exercise, setExercise] = useState(getNewExercise(user.id));
   const navigate = useNavigate();
