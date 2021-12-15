@@ -3,9 +3,9 @@ describe("Exercises", () => {
     cy.visit("http://localhost:3000");
   });
 
-  // TODO: Determine how to show this message in a repeatable manner
-  it.skip("should display exercises, then support deleting exercises and display the no exercises message when there are no exercises", () => {
-    // Now I've deleted all existing exercises, so the no exercies message should display
+  it("should display the 'no exercises' when there are no exercises", () => {
+    // "Log in" as the user with no exercises via the dev tools
+    cy.findByLabelText("User").select("0-exercises@nope.com");
     cy.findByText("No exercises exist. :(");
   });
 });
