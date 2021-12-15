@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getUsers } from "./api/userApi";
 import styles from "./DevTools.module.css";
 import { User } from "./types";
+import invariant from "invariant";
 
 type DevToolsProps = {
   user: User | null;
@@ -26,7 +27,13 @@ export default function DevTools(props: DevToolsProps) {
       <select
         id="devtools-user"
         value={props.user?.id}
-        //onChange={(event) => setUser}
+        onChange={(event) => {
+          const user = users.find(
+            (user) => user.id.toString() === event.target.value
+          );
+          invariant(user !== undefined, "User not found.");
+          props.setUser(user);
+        }}
       >
         {users.map((user) => (
           <option key={user.id} value={user.id}>
