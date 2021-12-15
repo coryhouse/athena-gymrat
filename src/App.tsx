@@ -43,7 +43,7 @@ export function App() {
     <UserContextProvider user={user} setUser={setUser}>
       {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" && (
         <Suspense fallback={<></>}>
-          <DevTools setUser={setUser} />
+          <DevTools />
         </Suspense>
       )}
       <nav>

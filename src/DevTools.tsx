@@ -5,12 +5,8 @@ import { User } from "./types";
 import invariant from "invariant";
 import { useUserContext } from "./UserContext";
 
-type DevToolsProps = {
-  setUser: (user: User) => void;
-};
-
-export default function DevTools({ setUser }: DevToolsProps) {
-  const { user } = useUserContext();
+export default function DevTools() {
+  const { user, setUser } = useUserContext();
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
