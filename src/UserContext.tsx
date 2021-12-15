@@ -5,7 +5,7 @@ import { User } from "./types";
 const UserContext = createContext<User | null>(null);
 
 type UserContextProviderProps = {
-  user: User;
+  user: User | null;
   children: React.ReactNode;
 };
 
