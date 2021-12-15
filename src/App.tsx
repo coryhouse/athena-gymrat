@@ -19,7 +19,8 @@ export function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const _exercises = await getExercises();
+        if (!user?.id) return; // Don't bother fetching exercises until a user is logged in.
+        const _exercises = await getExercises(user.id);
         setExercises(_exercises);
         setIsLoading(false);
       } catch (error) {
@@ -27,7 +28,7 @@ export function App() {
       }
     }
     fetchData();
-  }, []);
+  }, [user?.id]);
 
   if (error) throw error;
 

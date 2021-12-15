@@ -23,8 +23,8 @@ export async function deleteExercise(id: Number) {
   return true;
 }
 
-export async function getExercises() {
-  const resp = await fetch("http://localhost:3001/exercises");
+export async function getExercises(userId: number) {
+  const resp = await fetch(`http://localhost:3001/exercises?userId=${userId}`);
   if (!resp.ok) throw resp;
   const exercises = (await resp.json()) as Exercise[];
   return exercises;
