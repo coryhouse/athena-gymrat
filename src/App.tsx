@@ -1,12 +1,10 @@
 import React, { Suspense } from "react";
 import { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useQuery } from "react-query";
 import { Link, Route, Routes } from "react-router-dom";
 import { AddExercise } from "./AddExercise";
-import { getExercises } from "./api/exerciseApi";
 import { Exercises } from "./Exercises";
-import { Exercise, User } from "./types";
+import { User } from "./types";
 import { UserContextProvider } from "./UserContext";
 
 // Lazy load so these are only loaded in local development
@@ -20,11 +18,6 @@ export const defaultUser: User = {
 
 export function App() {
   const [user, setUser] = useState<User>(defaultUser);
-  const exerciseQuery = useQuery<Exercise[]>(["exercises", user.id], () =>
-    getExercises(user.id)
-  );
-
-  if (exerciseQuery.error) throw exerciseQuery.error;
 
   return (
     <UserContextProvider user={user} setUser={setUser}>
@@ -44,29 +37,22 @@ export function App() {
         </ul>
       </nav>
 
-      {exerciseQuery.isLoading || !exerciseQuery.data ? (
-        "Loading..."
-      ) : (
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ErrorBoundary
-                fallbackRender={({ error, resetErrorBoundary }) => {
-                  return <p>Sorry, exercises is currently down.</p>;
-                }}
-              >
-                <Exercises exercises={exerciseQuery.data} />
-              </ErrorBoundary>
-            }
-          />
-          <Route
-            path="/add"
-            element={<AddExercise exercises={exerciseQuery.data} />}
-          />
-          <Route path="*" element={<h1>Page not found.</h1>} />
-        </Routes>
-      )}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <ErrorBoundary
+              fallbackRender={({ error, resetErrorBoundary }) => {
+                return <p>Sorry, exercises is currently down.</p>;
+              }}
+            >
+              <Exercises />
+            </ErrorBoundary>
+          }
+        />
+        <Route path="/add" element={<AddExercise />} />
+        <Route path="*" element={<h1>Page not found.</h1>} />
+      </Routes>
     </UserContextProvider>
   );
 }
