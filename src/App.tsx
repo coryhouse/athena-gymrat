@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { useQuery } from "react-query";
 import { Link, Route, Routes } from "react-router-dom";
 import { AddExercise } from "./AddExercise";
 import { getExercises } from "./api/exerciseApi";
@@ -19,25 +20,11 @@ export const defaultUser: User = {
 
 export function App() {
   const [user, setUser] = useState<User>(defaultUser);
-  const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<unknown>(null);
+  const exerciseQuery = useQuery<Exercise[]>(["exercises", user.id], () =>
+    getExercises(user.id)
+  );
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        if (!user?.id) return; // Don't bother fetching exercises until a user is logged in.
-        const _exercises = await getExercises(user.id);
-        setExercises(_exercises);
-        setIsLoading(false);
-      } catch (error) {
-        setError(error);
-      }
-    }
-    fetchData();
-  }, [user?.id]);
-
-  if (error) throw error;
+  if (exerciseQuery.error) throw exerciseQuery.error;
 
   return (
     <UserContextProvider user={user} setUser={setUser}>
@@ -57,7 +44,7 @@ export function App() {
         </ul>
       </nav>
 
-      {isLoading ? (
+      {exerciseQuery.isLoading || !exerciseQuery.data ? (
         "Loading..."
       ) : (
         <Routes>
@@ -69,15 +56,13 @@ export function App() {
                   return <p>Sorry, exercises is currently down.</p>;
                 }}
               >
-                <Exercises exercises={exercises} setExercises={setExercises} />
+                <Exercises exercises={exerciseQuery.data} />
               </ErrorBoundary>
             }
           />
           <Route
             path="/add"
-            element={
-              <AddExercise exercises={exercises} setExercises={setExercises} />
-            }
+            element={<AddExercise exercises={exerciseQuery.data} />}
           />
           <Route path="*" element={<h1>Page not found.</h1>} />
         </Routes>
