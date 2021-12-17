@@ -1,17 +1,18 @@
 import { useState } from "react";
+import { useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { deleteExercise } from "./api/exerciseApi";
+import { deleteExercise, getExercises } from "./api/exerciseApi";
 import { Exercise } from "./types";
+import { useUserContext } from "./UserContext";
 
-type ExerciseProps = {
-  exercises: Exercise[];
-  setExercises: (exercises: Exercise[]) => void;
-};
-
-export function Exercises({ exercises, setExercises }: ExerciseProps) {
+export function Exercises() {
+  const { user } = useUserContext();
+  const exerciseQuery = useQuery<Exercise[]>(["exercises", user.id], () =>
+    getExercises(user.id)
+  );
   const [error, setError] = useState<unknown>(null);
 
-  function renderTable() {
+  function renderTable(exercises: Exercise[]) {
     return (
       <table>
         <thead>
@@ -32,9 +33,9 @@ export function Exercises({ exercises, setExercises }: ExerciseProps) {
                       try {
                         // This is an optimistic delete.
                         // We're not waiting for the delete call above to succeed.
-                        setExercises(
-                          exercises.filter((e) => e.id !== exercise.id)
-                        );
+                        // setExercises(
+                        //   exercises.filter((e) => e.id !== exercise.id)
+                        // );
                         await deleteExercise(exercise.id);
                         toast.success("Exercise deleted.");
                       } catch (error) {
@@ -55,6 +56,8 @@ export function Exercises({ exercises, setExercises }: ExerciseProps) {
     );
   }
 
+  if (exerciseQuery.isLoading || !exerciseQuery.data) return <p>Loading...</p>;
+
   if (error) throw error;
 
   return (
@@ -62,7 +65,26 @@ export function Exercises({ exercises, setExercises }: ExerciseProps) {
       <h1>Gymrat</h1>
 
       <h2>Exercises</h2>
-      {exercises.length > 0 ? renderTable() : <p>No exercises exist. :(</p>}
+
+      {/** If react-query is refetching to check for fresh data, show the user a message */}
+      {exerciseQuery.isRefetching && (
+        <p
+          style={{
+            backgroundColor: "lightblue",
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+          }}
+        >
+          Checking for fresh data...
+        </p>
+      )}
+
+      {exerciseQuery.data.length > 0 ? (
+        renderTable(exerciseQuery.data)
+      ) : (
+        <p>No exercises exist. :(</p>
+      )}
     </>
   );
 }
