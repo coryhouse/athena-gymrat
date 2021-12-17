@@ -1,10 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addExercise } from "./api/exerciseApi";
 import { Input } from "./reusable/Input";
-import { FormStatus, NewExercise } from "./types";
+import { Exercise, FormStatus, NewExercise } from "./types";
 import { useUserContext } from "./UserContext";
 
 function getNewExercise(userId: number) {
@@ -19,11 +19,26 @@ function getNewExercise(userId: number) {
 type Errors = Partial<NewExercise>;
 
 export function AddExercise() {
+  const queryClient = useQueryClient();
   const { user } = useUserContext();
   const [status, setStatus] = useState<FormStatus>("Idle");
   const [exercise, setExercise] = useState(getNewExercise(user.id));
 
-  const exerciseMutation = useMutation(addExercise);
+  const exerciseMutation = useMutation(addExercise, {
+    onSuccess: async (newExercise) => {
+      // Read existing exercises from query cache
+      const existingExercises = queryClient.getQueryData([
+        "exercises",
+        user.id,
+      ]) as Exercise[];
+
+      // Update query cache to include the new record. This way the record immediately displays after redirect
+      queryClient.setQueryData(
+        ["exercises", user.id],
+        [...existingExercises, newExercise]
+      );
+    },
+  });
 
   const navigate = useNavigate();
 
