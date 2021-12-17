@@ -1,9 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addExercise } from "./api/exerciseApi";
 import { Input } from "./reusable/Input";
-import { Exercise, FormStatus, NewExercise } from "./types";
+import { FormStatus, NewExercise } from "./types";
 import { useUserContext } from "./UserContext";
 
 function getNewExercise(userId: number) {
@@ -17,15 +18,13 @@ function getNewExercise(userId: number) {
 
 type Errors = Partial<NewExercise>;
 
-type AddExerciseProps = {
-  exercises: Exercise[];
-  setExercises: (exercises: Exercise[]) => void;
-};
-
-export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
+export function AddExercise() {
   const { user } = useUserContext();
   const [status, setStatus] = useState<FormStatus>("Idle");
   const [exercise, setExercise] = useState(getNewExercise(user.id));
+
+  const exerciseMutation = useMutation(addExercise);
+
   const navigate = useNavigate();
 
   // Derived state
@@ -52,8 +51,7 @@ export function AddExercise({ exercises, setExercises }: AddExerciseProps) {
     event.preventDefault(); // Don't post back
     setStatus("Submitted");
     if (!formIsValid) return; // if form isn't valid, stop here.
-    const savedExercise = await addExercise(exercise);
-    setExercises([...exercises, savedExercise]);
+    exerciseMutation.mutate(exercise);
     toast.success("Exercise saved.");
     navigate("/");
   }
