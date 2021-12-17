@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { deleteExercise, getExercises } from "./api/exerciseApi";
 import { Exercise } from "./types";
@@ -7,9 +7,27 @@ import { useUserContext } from "./UserContext";
 
 export function Exercises() {
   const { user } = useUserContext();
+  const queryClient = useQueryClient();
   const exerciseQuery = useQuery<Exercise[]>(["exercises", user.id], () =>
     getExercises(user.id)
   );
+
+  const exerciseDelete = useMutation(deleteExercise, {
+    onSuccess: async (data, exerciseId) => {
+      // Read existing exercises from query cache
+      const existingExercises = queryClient.getQueryData([
+        "exercises",
+        user.id,
+      ]) as Exercise[];
+
+      // Remove the deleted exercise from cache
+      queryClient.setQueryData(
+        ["exercises", user.id],
+        existingExercises.filter((e) => e.id !== exerciseId)
+      );
+    },
+  });
+
   const [error, setError] = useState<unknown>(null);
 
   function renderTable(exercises: Exercise[]) {
@@ -31,12 +49,7 @@ export function Exercises() {
                     aria-label={`Delete ${exercise.type} with weight of ${exercise.weight}`}
                     onClick={async (e) => {
                       try {
-                        // This is an optimistic delete.
-                        // We're not waiting for the delete call above to succeed.
-                        // setExercises(
-                        //   exercises.filter((e) => e.id !== exercise.id)
-                        // );
-                        await deleteExercise(exercise.id);
+                        exerciseDelete.mutate(exercise.id);
                         toast.success("Exercise deleted.");
                       } catch (error) {
                         setError(error);
