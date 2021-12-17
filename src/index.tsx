@@ -5,6 +5,7 @@ import { App } from "./App";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 function Fallback() {
   return <p>Oops, an error occurred.</p>;
@@ -19,6 +20,7 @@ render(
         <ToastContainer />
         <App />
       </BrowserRouter>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   </ErrorBoundary>,
   document.getElementById("root")
