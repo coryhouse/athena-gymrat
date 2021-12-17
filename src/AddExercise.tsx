@@ -18,7 +18,7 @@ function getNewExercise(userId: number) {
 
 type Errors = Partial<NewExercise>;
 
-export function AddExercise() {
+export default function AddExercise() {
   const queryClient = useQueryClient();
   const { user } = useUserContext();
   const [status, setStatus] = useState<FormStatus>("Idle");

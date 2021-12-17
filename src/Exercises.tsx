@@ -5,7 +5,7 @@ import { deleteExercise, getExercises } from "./api/exerciseApi";
 import { Exercise } from "./types";
 import { useUserContext } from "./UserContext";
 
-export function Exercises() {
+export default function Exercises() {
   const { user } = useUserContext();
   const queryClient = useQueryClient();
   const exerciseQuery = useQuery<Exercise[]>(["exercises", user.id], () =>

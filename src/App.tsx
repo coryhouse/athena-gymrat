@@ -2,10 +2,11 @@ import React, { Suspense } from "react";
 import { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Link, Route, Routes } from "react-router-dom";
-import { AddExercise } from "./AddExercise";
-import { Exercises } from "./Exercises";
 import { User } from "./types";
 import { UserContextProvider } from "./UserContext";
+
+const Exercises = React.lazy(() => import("./Exercises"));
+const AddExercise = React.lazy(() => import("./AddExercise"));
 
 // Lazy load so these are only loaded in local development
 const DevTools = React.lazy(() => import("./DevTools"));
@@ -46,11 +47,20 @@ export function App() {
                 return <p>Sorry, exercises is currently down.</p>;
               }}
             >
-              <Exercises />
+              <Suspense fallback={<></>}>
+                <Exercises />
+              </Suspense>
             </ErrorBoundary>
           }
         />
-        <Route path="/add" element={<AddExercise />} />
+        <Route
+          path="/add"
+          element={
+            <Suspense fallback={<>Loading Exercise page...</>}>
+              <AddExercise />
+            </Suspense>
+          }
+        />
         <Route path="*" element={<h1>Page not found.</h1>} />
       </Routes>
     </UserContextProvider>
